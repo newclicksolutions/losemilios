@@ -1,0 +1,10 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "username": "root",
+  "password": "",
+  "database": "emiliobd",
+  "entities": ["src/**/*.entity{.ts,.js}"],
+  "synchronize": true 
+}
+ 
