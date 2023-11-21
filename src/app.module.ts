@@ -8,6 +8,9 @@ import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 import { Configuration } from './config/config.keys';
 import { AuthModule } from './modules/auth/auth.module';
+import { ProductsModule } from './modules/module/product.module';
+import { ProductsController } from './modules/controllers/products.controller';
+import {ProductsService} from './modules/services/product.service';
 import { from } from 'rxjs';
 import { join } from 'path';
 
@@ -17,12 +20,13 @@ import { join } from 'path';
     UsersModule,
     ConfigModule,
     AuthModule,
+    ProductsModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'upload'),
       exclude: ['/api*'],
     }),
   ],
-  controllers: [AppController],
+  controllers: [AppController,ProductsController],
   providers: [AppService],
 })
 //export
@@ -32,3 +36,4 @@ export class AppModule {
     AppModule.port = this._configService.get(Configuration.PORT);
   }
 }
+
