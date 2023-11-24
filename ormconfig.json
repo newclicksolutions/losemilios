@@ -2,7 +2,7 @@
   "type": "mysql",
   "host": "localhost",
   "username": "root",
-  "password": "030607C16B5580B084AE7EEFE3A688266E8462B6",
+  "password": "",
   "database": "emiliobd",
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "synchronize": true 
