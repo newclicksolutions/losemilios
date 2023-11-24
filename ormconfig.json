@@ -1,6 +1,6 @@
 {
   "type": "mysql",
-  "host": "localhost",
+  "host": "172.233.175.48",
   "username": "root",
   "password": "",
   "database": "emiliobd",
