@@ -1,8 +1,8 @@
 {
   "type": "mysql",
-  "host": "172.233.175.48",
+  "host": "localhost",
   "username": "root",
-  "password": "",
+  "password": "*030607C16B5580B084AE7EEFE3A688266E8462B6",
   "database": "emiliobd",
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "synchronize": true 
