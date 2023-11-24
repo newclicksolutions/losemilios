@@ -17,20 +17,28 @@ export class ProductsService {
   
   async getProduct(product: CreateProdutcDto): Promise<CreateProdutcDto[]> {
     const products = await this.productsRepository.find({
-      relations: ['Category','addition', 'Skuid']
+      relations: ['Category','addition']
     });
   
     return;
   }
   
 
-  async getAllProducts(product: CreateProdutcDto): Promise<CreateProdutcDto[]> {
+  async getAllProducts(product: CreateProdutcDto) {
     const products = await this.productsRepository.find({
-      relations: ['Category','addition', 'Skuid']
+      relations: ['Category','addition']
     });
   
     return products;
   }
+
+  async createProducts(product: CreateProdutcDto) {
+    const products = await this.productsRepository.save(product)
+
+    const result = await this.productsRepository.create(products)
+    return result;
+  }
+
 
   async updateProduct(product: CreateProdutcDto): Promise<CreateProdutcDto[]> {
     const products = await this.productsRepository.find({

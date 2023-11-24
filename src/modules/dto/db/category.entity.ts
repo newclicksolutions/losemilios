@@ -14,11 +14,14 @@ export class CategoryEntity extends BaseEntity {
   category_id: number
 
   @Column({ length: 50 })
-  category: string;
+  title: string;
+
+  @Column({ length: 350 })
+  img: string;
 
   @OneToMany(
     type => ProductEntity,
-    categ => categ.Category,
+    categ => categ.Category, 
   )
   categorys: ProductEntity[];
 }

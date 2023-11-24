@@ -7,10 +7,12 @@ import {
   Timestamp, 
   ManyToOne,
   ManyToMany,
+  JoinTable
 } from 'typeorm';
 import { CategoryEntity } from './category.entity';
 import { GaleryEntity } from './galery.entity';
 import { additionsyEntity } from './additions.entity';
+//import { AditionrPoductsEntityEntity } from './aditionproducts.entity';
 
 @Entity('products')
 export class ProductEntity extends BaseEntity {
@@ -18,7 +20,7 @@ export class ProductEntity extends BaseEntity {
   product_id: number;
 
   @Column({ length: 50 })
-  name: string;
+  title: string;
 
   @Column()
   tax: number;
@@ -27,7 +29,7 @@ export class ProductEntity extends BaseEntity {
   price: number;
 
   @Column({ length: 950 })
-  description: String;
+  content: String;
 
   @Column({ length: 250 })
   unit: string;
@@ -35,24 +37,37 @@ export class ProductEntity extends BaseEntity {
   @Column({ nullable: true })
   deletedAt: Date;
   
+  @Column({ length: 350 })
+  img: string;
+
+  @Column({ default: 0 }) 
+  value: number;
+
   @ManyToOne(
     type => CategoryEntity,
     category => category.categorys,
   )
   Category: CategoryEntity;
-
-  @ManyToOne(
-    type => additionsyEntity,
-    category => category.additions,
-  )
-  addition: additionsyEntity;
-
   
   @OneToMany(
     type => GaleryEntity,
     skuid => skuid.sku_produt_id,
   )
   Skuid: GaleryEntity[];
+
+  @ManyToMany(
+    type => ProductEntity,
+    Addition => Addition.product,
+  )
+
+  @JoinTable()
+  addition: ProductEntity[];
+
+  @ManyToMany(
+    type => ProductEntity,
+    Product => Product.addition,
+  )
+  product: ProductEntity[];
 
 
 }

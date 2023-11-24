@@ -26,11 +26,11 @@ export class additionsyEntity extends BaseEntity {
   @Column()
   quantity: number;
 
-  @OneToMany(
+/*   @OneToMany(
     type => ProductEntity,
     categ => categ.addition,
   )
-  additions: ProductEntity[];
+  additions: ProductEntity[]; */
 
   @OneToMany(
     type => GaleryEntity,

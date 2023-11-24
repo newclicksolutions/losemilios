@@ -17,8 +17,8 @@ export class ProductsController {
   }
 
   @Post()
-  createProduct(@Body() data: CreateProductDto) {
-    return this.productService.(data);
+  createProduct(@Body() data: CreateProdutcDto) {
+    return this.productService.createProducts(data);
   }
 
   @Put(':id')
