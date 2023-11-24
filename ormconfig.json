@@ -1,5 +1,5 @@
 {
-  "type": "mysql",
+  "type": "MariaDB",
   "host": "localhost",
   "username": "root",
   "password": "",
