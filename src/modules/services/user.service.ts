@@ -19,7 +19,7 @@ export class UsersService {
 
   async getUsers(user: UsersInterface): Promise<UsersInterface[]> {
     const users = await this.usersRepository.find({
-      relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
+    //  relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
     });
 
     return users;
@@ -30,7 +30,7 @@ export class UsersService {
 
   async getTopUser(data: UserListInterface) {
     return await this.usersRepository.find({
-      relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
+    //  relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
       take: 110,
       skip: 0,
     });
@@ -38,21 +38,21 @@ export class UsersService {
 
   public async findByEmail(userEmail: string): Promise<UserEntity | null> {
     return await this.usersRepository.findOne({
-      relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
+   //   relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
       where: [{ email: userEmail }],
     });
   }
 
   public async findById(id: number): Promise<UserEntity | null> {
     return await this.usersRepository.findOneOrFail({
-      relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
+    //  relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
       where: [{ user_id: id }],
     });
   }
 
   async getUser(_id: number): Promise<UsersInterface[]> {
     return await this.usersRepository.find({
-      relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
+   //   relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
       where: [{ user_id: _id }],
     });
   }
@@ -66,7 +66,7 @@ export class UsersService {
 
   async findOne(username: string): Promise<UsersInterface[]> {
     return await this.usersRepository.find({
-      relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
+     // relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
       where: [{ user_neme: name }],
     });
   }
@@ -96,7 +96,7 @@ export class UsersService {
   }
   async findAll() {
     return await this.usersRepository.find({
-      relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
+      //relations: ['client_type_id', 'user_type_id', 'restaurant','restaurant.Discounts','Discounts'],
     });
   }
 

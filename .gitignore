@@ -6,7 +6,7 @@
 # Node artifact files
 node_modules/
 dist/
-
+ormconfig.json
 # Compiled Java class files
 *.class
 
