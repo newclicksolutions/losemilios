@@ -25,6 +25,4 @@ jobs:
     ssh-add -L
   env:
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Deploy to Server
-        run: |
-           ssh root@172.233.175.48 -p 2300 "cd /losemiliosAPP/emilios-api && git pull origin main && npm run build &&pm2 restart 0"
+    
