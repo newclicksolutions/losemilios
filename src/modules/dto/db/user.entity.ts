@@ -14,6 +14,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { UserTypeEntity } from './usertype.entity';
+import { RestaurantEntity } from './restaurant.entity';
+import { OrderEntity } from './order.entity';
 import { UserRO } from '../interfaces/user/dto/usersro.dto';
 
 @Entity('users')
@@ -91,5 +94,24 @@ export class UserEntity {
  
   @Column('timestamp')
   user_registered: Timestamp;
+
+  @ManyToOne(
+    type => UserTypeEntity,
+    user_type => user_type.userstypes,
+  )
+  user_type_id: UserTypeEntity;
+
+  @ManyToMany(
+    type => RestaurantEntity,
+    Restaurant => Restaurant.user,
+  )
+  restaurant: RestaurantEntity[];
+
+  @OneToMany(
+    type => OrderEntity,
+    order => order.User,
+  )
+  Order: OrderEntity[];
+
 
 }

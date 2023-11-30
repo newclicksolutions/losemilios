@@ -12,6 +12,7 @@ import {
 import { CategoryEntity } from './category.entity';
 import { GaleryEntity } from './galery.entity';
 import { additionsyEntity } from './additions.entity';
+import { OederProdutsEntity } from './orderproducts.entity';
 //import { AditionrPoductsEntityEntity } from './aditionproducts.entity';
 
 @Entity('products')
@@ -69,6 +70,11 @@ export class ProductEntity extends BaseEntity {
   )
   product: ProductEntity[];
 
+  @OneToMany(
+    type => OederProdutsEntity,
+    orderproduct => orderproduct.product,
+  )
+  public orderproduct!: OederProdutsEntity[];
 
 }
 

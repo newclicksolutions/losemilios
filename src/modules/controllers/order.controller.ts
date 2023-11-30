@@ -1,0 +1,98 @@
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Put,
+  Delete,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
+import { OrderService } from '../services/order.service';
+import { OrderInterface } from '../dto/interfaces/orders/orders.interface';
+import { CreateOrderInterface } from '../dto/interfaces/orders/createorders.interface';
+import { AuthGuard } from '@nestjs/passport';
+import axios from 'axios';
+@Controller('order')
+export class OrderController {
+  constructor(private service: OrderService) {}
+
+  @Get(':id')
+  get(@Param() params) {
+    return this.service.getOrder(params.id);
+  }
+
+  @Get('user/:id')
+  getByuser(@Param() params) {
+    return this.service.getOrderbyUser(params.id);
+  }
+
+  //@UseGuards(AuthGuard('local'))
+  @Get()
+  getall(@Body() data: OrderInterface) {
+    return this.service.getOrders(data);
+  } 
+
+  @Post('/orderdelivery')
+  async  getBydate(@Body() data: any) {
+     return await this.service.getOrdersdeliveryBydateall(data);
+  }
+
+  @Post('/allorderdelivery')
+  async  getallBydate(@Body() data: any) {
+     return await this.service.getOrdersdeliveryBydate(data);
+  }
+  @Post('/buyorder')
+  async  getallbuyorderBydate(@Body() data: any) { 
+     return await this.service.getBybuyorder(data);
+  }
+
+  @Post('/encabezado')
+  async encabezado(@Body() data: any) {
+    const encabezado = await this.service.getByheader(data);
+    const detalle = await this.service.getByheadervariant(data);
+    console.log(encabezado.Cliente);
+return{
+  encabezado: encabezado,
+  detalle:detalle
+} 
+  }
+
+  @Post('/updatastatus')
+  async  updatastatus(@Body() data: any) {
+     return await this.service.updateState(data);
+  }
+  @Post()
+  async create(@Body() data: CreateOrderInterface) {
+    const maxid = await this.service.getMaxId();
+    data.order_id = maxid + 1;
+    if (data.tax_amount ==null || data.total_sale ==null) {
+      let total = 0
+      let totaltax = 0
+      for (const key in data.orderproduct) {
+        const element = data.orderproduct[key];
+        total = total + (element.quantity * element.price)
+        totaltax = totaltax + element.tax_value
+      }
+      data.tax_amount = total
+      data.total_sale = totaltax
+    }
+    return this.service.createOrder(data);
+  } 
+
+  @Put()
+  update(@Body() data: CreateOrderInterface) {
+    return this.service.updateOrder(data);
+  }
+
+  @Delete(':id')
+  deleteUser(@Param() params) {
+    return this.service.deleteOrder(params.id);
+  }
+
+
+
+  
+}
+
+
