@@ -18,6 +18,8 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - name: executing remote ssh commands using ssh key
+  uses: appleboy/ssh-action@master
      with:
     host: 172.233.175.48
     username: root
