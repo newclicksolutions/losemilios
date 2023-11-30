@@ -34,6 +34,8 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+//export RUNNER_ALLOW_RUNASROOT="1"
+
 ## Support
 
 Newclicksoluciones
