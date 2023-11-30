@@ -4,8 +4,8 @@ export interface OrderProductInterface {
   sku: string;
   unit: string;
   name: string;
-  tax_product: number;
-  tax_value: number;
+  total: number;
+  totaladitions: number;
   nota: string;
-  details: string; 
+  aditions: string; 
 }

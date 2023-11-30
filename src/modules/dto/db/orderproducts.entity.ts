@@ -27,10 +27,10 @@ export class OederProdutsEntity extends BaseEntity {
   public price: number;
 
   @Column()
-  public tax_product!: number;
+  public total!: number;
 
   @Column()
-  public tax_value!: number;
+  public totaladitions!: number;
 
   @Column({ length: 30 })
   public unit!: string;
@@ -42,7 +42,7 @@ export class OederProdutsEntity extends BaseEntity {
   public nota!: string;
 
   @Column({ length: 950 })
-  public details!: string;
+  public aditions!: string;
 
   @ManyToOne(
     type => OrderEntity,
