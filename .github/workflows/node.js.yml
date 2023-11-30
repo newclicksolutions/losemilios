@@ -17,6 +17,14 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          - name: Debug SSH
+  run: |
+    echo "$SSH_PRIVATE_KEY" > key.pem
+    cat key.pem
+    ssh-keygen -y -f key.pem
+    ssh-add -L
+  env:
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Deploy to Server
         run: |
            ssh root@172.233.175.48 -p 2300 "cd /losemiliosAPP/emilios-api && git pull origin main && npm run build &&pm2 restart 0"
