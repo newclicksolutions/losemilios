@@ -8,6 +8,9 @@ export interface CreateOrderInterface  extends OrderProductInterface{
   total_sale: number;
   shipping: String;
   reference_code:String;
+  customername: String;
+  customertel: String;
+  customeremail: String;
   ship: String;
   orderproduct 
 }

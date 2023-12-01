@@ -68,6 +68,15 @@ export class OrderEntity extends   BaseEntity{
   @Column({ length: 90 })
   reference_code: String;
 
+  @Column({ length: 90 })
+  customername: String;
+
+  @Column({ length: 90 })
+  customertel: String;
+
+  @Column({ length: 90 })
+  customeremail: String;
+
   @ManyToOne(
     type => OrderStatusEntity,
     orderstatus => orderstatus.Order,
