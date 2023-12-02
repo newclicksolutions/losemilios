@@ -57,6 +57,12 @@ export class OrderEntity extends   BaseEntity{
   shipping_amount: number;
 
   @Column()
+  tiping_amount: number;
+
+  @Column()
+  subtotal: number;
+
+  @Column()
   total_sale: number;
 
   @Column({ length: 950 })

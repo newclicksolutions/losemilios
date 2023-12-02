@@ -5,6 +5,8 @@ export interface CreateOrderInterface  extends OrderProductInterface{
   tax_amount: number;
   shipped_date: Date;
   shipping_amount: number;
+  tiping_amount: number;
+  subtotal: number;
   total_sale: number;
   shipping: String;
   reference_code:String;
