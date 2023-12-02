@@ -3,6 +3,8 @@ export interface ConfigInterface {
   admin_email: string;
   date_format: string;
   time_format: string;
+  shipvalue: number;
+  dealertip: number;
   ordercreated_email_message: string;
   orderupdate_email_message: string;
   notify_email_message: string;

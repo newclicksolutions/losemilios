@@ -22,6 +22,12 @@ export class ConfigEntity extends BaseEntity {
   @Column({ length: 50 })
   time_format: string;
 
+  @Column()
+  shipvalue: number;
+
+  @Column()
+  dealertip: number;
+
   @Column({ length: 250 })
   ordercreated_email_message: string;
 
