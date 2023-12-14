@@ -26,6 +26,7 @@ export class OrderService {
         'OrderStatus',
         'Paymethod',
         'orderproduct',
+        'orderproduct.product',
         'Restaurant',
         'Transaction', 
       ],
@@ -122,6 +123,7 @@ async getByheadervariant(order: any) {
         'OrderStatus',
         'Paymethod',
         'orderproduct',
+        'orderproduct.product',
         'Restaurant',
         'Transaction',
       ],
@@ -280,6 +282,7 @@ async getByheadervariant(order: any) {
           'OrderStatus',
           'Paymethod',
           'orderproduct',
+          'orderproduct.product',
           'Restaurant',
           'Transaction',
         ],
@@ -329,12 +332,12 @@ async getByheadervariant(order: any) {
     var list = [];
     try {
       if (result) {
+        await this.orderProductService.CreateOrderProdut(data.orderproduct)
         list.push(data)
         if (list[0].length<=90) {
           for (let index = 0; index < list[0].length; index++) {
             const element = list[0][index];
             console.log(element.order_id)
-
           } 
           this.deliveryMail(result.order_id, 'Actualizado');
           return result;

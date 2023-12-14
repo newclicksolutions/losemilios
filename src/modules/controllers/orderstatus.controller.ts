@@ -22,9 +22,9 @@ export class OrderStatusController {
   }
 
   //@UseGuards(AuthGuard('local'))
-  @Get()
-  getall(@Body() data: OrderStatusInterface) {
-    return this.service.getOrders(data);
+  @Get() 
+  getall() {
+    return this.service.getOrdersstatus();
   }
   @Post()
   create(@Body() data: OrderStatusInterface) {

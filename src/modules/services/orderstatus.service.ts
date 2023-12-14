@@ -17,6 +17,10 @@ export class OrderStatusService {
     return await this.OrderRepository.find();
   }
 
+  async getOrdersstatus() {
+    return await this.OrderRepository.find();
+  }
+
   async getOrder(_id: number): Promise<OrderStatusInterface[]> {
     return await this.OrderRepository.find();
   }
