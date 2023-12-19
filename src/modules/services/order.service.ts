@@ -25,6 +25,7 @@ export class OrderService {
     const orders = await this.OrderRepository.find({
       relations: [
         'User',
+        'User.user_type_id',
         'OrderStatus',
         'Paymethod',
         'orderproduct',
@@ -144,6 +145,7 @@ async getByheadervariant(order: any) {
     const orders = await this.OrderRepository.find({
       relations: [
         'User',
+        'User.user_type_id',
         'OrderStatus',
         'Paymethod',
         'orderproduct',
@@ -179,6 +181,7 @@ async getByheadervariant(order: any) {
     return await this.OrderRepository.findOne({
       relations: [
         'User',
+        'User.user_type_id',
         'OrderStatus',
         'Paymethod',
         'orderproduct',
@@ -197,6 +200,7 @@ async getByheadervariant(order: any) {
     return await this.OrderRepository.find({
       relations: [
         'User',
+        'User.user_type_id',
         'OrderStatus',
         'Paymethod',
         'orderproduct',
@@ -221,6 +225,7 @@ async getByheadervariant(order: any) {
     return await this.OrderRepository.find({
       relations: [
         'User',
+        'User.user_type_id',
         'OrderStatus',
         'Paymethod',
         'orderproduct',
@@ -236,6 +241,7 @@ async getByheadervariant(order: any) {
     return await this.OrderRepository.find({
       relations: [
         'User',
+        'User.user_type_id',
         'OrderStatus',
         'Paymethod',
         'orderproduct',
@@ -250,6 +256,7 @@ async getByheadervariant(order: any) {
     return await this.OrderRepository.find({
       relations: [
         'User',
+        'User.user_type_id',
         'OrderStatus',
         'Paymethod',
         'orderproduct',
@@ -265,6 +272,7 @@ async getByheadervariant(order: any) {
     return await this.OrderRepository.find({
       relations: [
         'User',
+        'User.user_type_id',
         'OrderStatus',
         'Paymethod',
         'orderproduct',
@@ -319,6 +327,7 @@ async getByheadervariant(order: any) {
       const orders = await this.OrderRepository.find({
         relations: [
           'User',
+          'User.user_type_id',
           'OrderStatus',
           'Paymethod',
           'orderproduct',
@@ -330,7 +339,7 @@ async getByheadervariant(order: any) {
       });
       await this.mailService.Sendemail([
         {
-          to: orders[0].User.email,
+          to: orders[0].User[0].email,
           from: {
             email: options.notify_email,
             name: 'Acre Comercializadora',

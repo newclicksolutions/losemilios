@@ -107,7 +107,7 @@ export class UserEntity {
   )
   restaurant: RestaurantEntity[];
 
-  @OneToMany(
+  @ManyToMany(
     type => OrderEntity,
     order => order.User,
   )

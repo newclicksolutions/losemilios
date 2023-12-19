@@ -102,11 +102,12 @@ export class OrderEntity extends   BaseEntity{
   )
   public orderproduct!: OederProdutsEntity[];
 
-  @ManyToOne(
+  @ManyToMany(
     type => UserEntity,
     user => user.Order,
   )
-  User: UserEntity;
+  @JoinTable()
+  User: UserEntity[];
 
   @ManyToOne(
     type => RestaurantEntity,

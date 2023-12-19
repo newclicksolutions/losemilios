@@ -54,7 +54,7 @@ export class TransactionService {
       });
        await this.mailService.Sendemail([
         {
-          to: transaccion[0].order.User.email,
+          to: transaccion[0].order.User[0].email,
           from: {
             email: options.notify_email,
             name: 'Acre Comercializadora',
