@@ -249,7 +249,11 @@ async getByheadervariant(order: any) {
         'Restaurant',
         'Transaction',
       ],
-      where: [{ User: _id }],
+      where:  (qb) => {
+        qb.where('User.usersUserId = :_id', {
+          _id
+        });
+      }
     });
   }
   async getOrderbyEmail(_id: string) {

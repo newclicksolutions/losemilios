@@ -50,6 +50,13 @@ export class UsersService {
     });
   }
 
+  public async findOrdersById(id: number): Promise<UserEntity | null> {
+    return await this.usersRepository.findOneOrFail({
+      relations: ['user_type_id', 'restaurant','Order'],
+      where: [{ user_id: id }],
+    });
+  }
+
   async getUser(_id: number): Promise<UsersInterface[]> {
     return await this.usersRepository.find({
       relations: ['user_type_id', 'restaurant'],

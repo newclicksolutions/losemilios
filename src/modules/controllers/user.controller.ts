@@ -27,6 +27,11 @@ export class UsersController {
      return await this.service.UserDealerPriority(params.uuid);
   } 
 
+  @Get('/orders/:uuid')
+  async getauserorders(@Param() params) { 
+     return await this.service.findOrdersById(params.uuid);
+  } 
+  
   //@UseGuards(AuthGuard('local'))
   @Get()
   getUserstop(@Body() data: UsersInterface) {
