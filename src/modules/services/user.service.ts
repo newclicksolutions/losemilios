@@ -47,18 +47,14 @@ export class UsersService {
     });
   }
 
-  public async findOrdersById(id: number): Promise<UserEntity | null> {
-    return await this.usersRepository.findOneOrFail({
+  public async findOrdersById(id: number) {
+    return await this.usersRepository.find({
       relations: [
         'user_type_id',
         'restaurant',
         'Order',
         'Order.OrderStatus',
-        'Order.Paymethod',
         'Order.orderproduct',
-        'Order.orderproduct.product',
-        'Order.Restaurant',
-        'Order.Transaction',
       ],
       where: [{ user_id: id }],
     });
