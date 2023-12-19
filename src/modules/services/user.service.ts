@@ -54,7 +54,11 @@ export class UsersService {
         'restaurant',
         'Order',
         'Order.OrderStatus',
+        'Order.Paymethod',
         'Order.orderproduct',
+        'Order.orderproduct.product',
+        'Order.Restaurant',
+        'Order.Transaction',
       ],
       where: [{ user_id: id }],
     });
