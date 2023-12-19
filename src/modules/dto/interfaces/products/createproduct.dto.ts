@@ -1,10 +1,13 @@
 
 export class CreateProdutcDto {
   product_id: number;
-  name: string;
+  date_created:Date;
+  title: string;
   tax: number;
   price: number;
-  description: string;
+  content: String;
   unit: string;
-  deleteAt?: Date;
+  deletedAt: Date;
+  img: string;
+  value: number;
 }

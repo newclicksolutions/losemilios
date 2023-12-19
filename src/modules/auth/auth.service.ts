@@ -53,7 +53,6 @@ export class AuthService {
   }
 
   async validateUserToken(payload: JwtPayload): Promise<UserEntity> {
-    console.log(payload);
     return await this.usersService.findById(payload.user_id);
   }
   async validateUser(email: string, password: string): Promise<UserRO> {

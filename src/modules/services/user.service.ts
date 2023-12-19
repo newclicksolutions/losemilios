@@ -139,13 +139,9 @@ export class UsersService {
   }
   async updateUser(data: UsersInterface) {
     const user = await this.usersRepository.create(data);
-    const respon = await this.usersRepository.save(user);
-    console.log(respon)
-    if (respon.user_id) {
-
-     // this.deliveryMail(respon.user_id, 'Actualizado')
+    const respon = await this.usersRepository.update(user.user_id,user);
       return respon;
-    }
+    
   }
 
   async deleteUser(user: UsersInterface) {

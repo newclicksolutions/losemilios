@@ -1,5 +1,6 @@
 export interface ProductInterface {
     product_id: number;
+    date_created:Date;
     name: string;
     unit: string;
     tax: number;

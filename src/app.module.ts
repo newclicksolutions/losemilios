@@ -17,6 +17,7 @@ import { OrderModule } from './modules/module/order.module';
 import { OrderProductModule } from './modules/module/orderproduct.module';
 import { RestaurantModule } from './modules/module/restaurant.module';
 import { OrderStatusModule } from './modules/module/orderstatus.module';
+import { TypeProductModule } from './modules/module/typeproduct.module';
 import { MailModule } from './modules/module/mail.module';
 import { from } from 'rxjs';
 import { join } from 'path';
@@ -35,9 +36,11 @@ import { join } from 'path';
     OrderModule,
     OrderProductModule,
     ProductModule,
+    TypeProductModule,
     OrderStatusModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'upload'),
+      rootPath: join(__dirname, '..', 'upload/products'),
+      serveStaticOptions: { index: false },
       exclude: ['/api*'],
     }),
   ],

@@ -1,4 +1,6 @@
 export interface CategoryInterface {
   category_id: number;
-  category: string;
+  title: string;
+  img: string;
+  categorys?
 }

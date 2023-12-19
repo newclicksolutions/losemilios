@@ -19,7 +19,6 @@ export class UsersController {
  
   @Get(':id')
   get(@Param() params) {
-    //  return new PayUClient().requestTest();
     return this.service.getUser(params.id);
   }
 
@@ -37,7 +36,7 @@ export class UsersController {
   restpassword(@Param() params) {
     return this.service.resetPassword(params.email);
   }
-  
+   
   @Get('valideuser/:username')
   getvaliduser(@Param() params) {
     return this.service.findusername(params.username);

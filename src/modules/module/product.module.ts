@@ -5,9 +5,10 @@ import { ProductsController } from '../controllers/products.controller';
 import { ProductEntity } from '../dto/db/product.entity';
 import { MailModule } from './mail.module';
 import { optionsModule } from './options.module';
+import { TypeProductModule } from './typeproduct.module';
 
 @Module({
-  imports: [optionsModule,MailModule,TypeOrmModule.forFeature([ProductEntity])],
+  imports: [TypeProductModule,optionsModule,MailModule,TypeOrmModule.forFeature([ProductEntity])],
   providers: [ProductsService],
   controllers: [ProductsController],
   exports:[ProductsService],

@@ -7,12 +7,14 @@ import {
   Delete,
   Param,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { OrderService } from '../services/order.service';
 import { OrderInterface } from '../dto/interfaces/orders/orders.interface';
 import { CreateOrderInterface } from '../dto/interfaces/orders/createorders.interface';
 import { AuthGuard } from '@nestjs/passport';
 import axios from 'axios';
+import { Pagination } from '../dto/interfaces/pagination.dto';
 @Controller('order')
 export class OrderController {
   constructor(private service: OrderService) {}
@@ -26,10 +28,20 @@ export class OrderController {
   getByuser(@Param() params) {
     return this.service.getOrderbyUser(params.id);
   }
+  @Get('email/:id')
+  getByemail(@Param() params) {
+    return this.service.getOrderbyEmail(params.id);
+  }
+  @Get('data/byYear')
+  getByyearl() {
+    return this.service.getOrderByYear();
+  }
 
+
+  
   //@UseGuards(AuthGuard('local'))
   @Get()
-  getall(@Body() data: OrderInterface) {
+  getall(@Query() data: Pagination) {
     return this.service.getOrders(data);
   } 
 

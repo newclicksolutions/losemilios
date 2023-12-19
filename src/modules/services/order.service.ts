@@ -8,6 +8,7 @@ import { OrderInterface } from '../dto/interfaces/orders/orders.interface';
 import { CreateOrderInterface } from '../dto/interfaces/orders/createorders.interface';
 import { TemplateClient } from '../../config/template/templates';
 import { OptionsService } from '../services/options.service';
+import { Pagination } from '../dto/interfaces/pagination.dto';
 
 @Injectable()
 export class OrderService {
@@ -19,8 +20,9 @@ export class OrderService {
     private readonly optionsService: OptionsService,
   ) {}
 
-  async getOrders(order: OrderInterface): Promise<OrderInterface[]> {
-    return await this.OrderRepository.find({
+  async getOrders(data: Pagination) {
+    const total= await this.OrderRepository.count();
+    const orders = await this.OrderRepository.find({
       relations: [
         'User',
         'OrderStatus',
@@ -30,24 +32,46 @@ export class OrderService {
         'Restaurant',
         'Transaction', 
       ],
+      skip: data.skip,
+      take: data.take,
+      order: {
+        date_created: 'DESC',
+      },
     });
+    return {totalregistros: total,totalpages: Math.round(total/data.take) , data:orders};
   }
 
- /*  
-   async getByheader(order: any) {
-    let ID = order.order_date;
-    let ID2 = order.order_date2;
-    return await this.OrderRepository.query('select DATE_FORMAT(order_date, "%d/%m/%y") as "Fecha Cotización", order_id as "Número de Cotización", DATE_FORMAT(order_date, "%d/%m/%y") as "Fecha de Vigencia", "" as "Vigencia En Días", "002" as "Concepto Factura",IFNULL(r.reference_id,u.reference_id) as Cliente,IFNULL(r.nit,u.document) as "Nit Cliente", IFNULL(r.name,CONCAT(u.name,"" ,u.last_name)) as "Nombre Cliente","01" as Vendedor,"N" as "Tipo Mensaje", "" as "Codigo Mensaje", "001" as Usuario, "" as "Centro de Costo Gene", "02" as "Lista de Precios", 8 as Plazo, "0" as "Descuento Comercial", "0" as "Descuento en Valor",0 as "Base Retención Iva",99 as "Tipo Descuento PPP", o.shipping as "Dirección", o.shipping as "Dirección Envío", "" as "Transportador", 0 as Acarreos, 99 as "Tipo Retención en la", 99 as "Tipo Retención Iva A", "0" as "Seguros", 99 as "Tipo Iva Seguros",99 as "Tipo Retención en la  ",99 as "Tipo Retención Iva S", "0" as "Fletes",99 as "Tipo Iva Fletes",99 as "Tipo Retención en la ", 99 as "Tipo Retención Iva F", 99 as "Tipo Retención Iva", 0 as "Documento Referencia",IFNULL(od.quantity,0) as "Cantidad Total", (o.total_sale+o.tax_amount) as "Valor Total Cotizaci","D"as "Estado", "01" as "Zona", "" as Macrozona, "" as Canal, "" as "Sector Dane", 2 as "Forma Pago", "N" as "Impreso","" as "Codigo Origen", "" as    "Codigo Motivo", "" as  "Fecha Ultima Modific", "" as "Aplicacion Origen", "" as  "Fecha Confirmacion", "" as    "Condicion Pago", "" as    "Descripcion Cotizaci", "" as  "Telefono Envio", 99 as "Tipo AIU Administrat", 99 as   "Tipo AIU Imprevistos", 99 as "Tipo AIU Utilidad", 99 as  "IVA AIU", 99 as   "AIU Incluido", 99 as  "Tipo Retencion AIU", 99 as    "Tipo Retencion CREE", "" as   "Centro de Costo NIIF", 99 as "Tipo Retencion CREE " from orders o  left join restaurant r on r.restaurant_id = o.restaurantRestaurantId left join users u on u.user_id = o.userUserId left join (select op.orderOrderId, sum(case unit when "KL" then quantity when "GR" then (quantity/1000) when "Uni" then (quantity * i.unit_stock_quantity) else 0 end) as quantity from order_products op inner join sku_product sku on sku.sku=op.sku inner join inventory i on i.productskuSkuProductId=sku.sku_product_id group by op.orderOrderId) od on od.orderOrderId = o.order_id where o.orderStatusOrderStatusId in (2,4) and o.order_date between "'+ID+'" and "'+ID2+'"');
-  }
-  
 
-  async getByheadervariant(order: any) {
-    let ID = order.order_date;
-    let ID2 = order.order_date2;
-    return await this.OrderRepository.query('select sku.orderOrderId as "Número Cotizacion",IFNULL(r.reference_id,u.reference_id) as Cliente, "01" as "Bodega", sku.sku as "Referencia", "" as "Código Barras", sku.name as "Descripcion Referenc", "KL" as "Unidad de Venta" , case sku.unit when "KL" then sku.quantity when "GR" then  (sku.quantity/1000) when "Uni" then (sku.quantity * i.unit_stock_quantity) else 0 end as "CANTIDAD COTIZADA", "02" as "LP del detalle",case sku.unit when "KL" then sku.price when "GR" then  sku.price*1000 when "Uni" then (1 * sku.price)/i.unit_stock_quantity else 0 end as "Base Unitaria", "1" as "Tasa Cambio", case sku.unit when "KL" then sku.price when "GR" then  sku.price*1000 when "Uni" then (1 * sku.price)/i.unit_stock_quantity else 0 end as "Precio","0" as "Descuento",99 as "Tipo de Iva", 99 as "Tipo de Retención","" as "Descripción Ampliada","" as "Fecha de Cierre","" as "Número de Fila","" as "Centro de costos del","0" as "Valor Ipoconsumo", "0" as "Valor Estampillas", "" as Version, "0" as "CantidadConfirmada", 99 as "Tipo de Impuesto Con", 99 as "Tipo de Retencion CR","" as "Centro de costos NII", "" as " Factor de Conversión",99 as "Tipo Retención en la",99 as "Tipo Retención Iva S",0 as "Fletes",99 as "Tipo Iva Fletes",99 as "Tipo Retención en la ", 99 as "Tipo Retención Iva F",99 as "Tipo Retención Iva",0 as "Documento Referencia", case sku.unit when "KL" then sku.quantity when "GR" then  (sku.quantity/1000) when "Uni" then (sku.quantity * i.unit_stock_quantity) else 0 end as "Cantidad Total", sku.quantity*sku.price as "Valor Total Cotizaci", "D" as "Estado", 1 as "Zona", "" as "Macrozona", "" as"Canal","" as "Sector Dane", 2 as "Forma Pago", "N" as "Impreso", "" as "Codigo Origen", "" as "Codigo Motivo", "" as "Fecha Ultima Modific", "" as "Aplicacion Origen","" as "Fecha Confirmacion", "" as "Condicion Pago", "" as "Descripcion Cotizaci", "" as "Telefono Envio", 99 as "Tipo AIU Administrat", 99 as "Tipo AIU Imprevistos", 99 as "Tipo AIU Utilidad", 99 as "IVA AIU","" as "AIU Incluido", 99 as "Tipo Retencion AIU", 99 as "Tipo Retencion CREE", "" as "Centro de Costo NIIF", 99 as "Tipo Retencion CREE " from order_products sku inner join orders o on sku.orderOrderId = o.order_id left join restaurant r on r.restaurant_id = o.restaurantRestaurantId left join users u on u.user_id = o.userUserId left join sku_product skuprod on skuprod.sku = sku.sku left join inventory i on i.productskuSkuProductId = skuprod.sku_product_id where o.orderStatusOrderStatusId in (2,4) and o.order_date between "' + ID + '" and "' + ID2 + '"');
+async getOrderByYear() {
+  const months = [
+    'Ene', 'Fe', 'Mar', 'Abr', 'May', 'Jun',
+    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic',
+  ];
+
+  const queryBuilder = this.OrderRepository.createQueryBuilder('o');
+    queryBuilder
+      .select('EXTRACT(YEAR FROM o.date_created) as year')
+      .addSelect('MONTHNAME(o.date_created) as month')
+      .addSelect('COUNT(*) as pedidos')
+      .addSelect('COALESCE(SUM(o.total_sale), 0) as total_orders')
+      .andWhere('o.orderStatusOrderStatusId = 4')
+      .groupBy('year, month')
+      .orderBy('year, month');
+
+    for (const month of months) {
+      queryBuilder
+        .addSelect('EXTRACT(YEAR FROM o.date_created) as year')
+        .addSelect('MONTHNAME(o.date_created) as month')
+        .addSelect('COUNT(*) as pedidos')
+        .addSelect('COALESCE(SUM(o.total_sale), 0) as total_orders')
+        .orWhere(`(EXTRACT(YEAR FROM o.date_created) = EXTRACT(YEAR FROM CURRENT_DATE()) AND MONTHNAME(o.date_created) = :month) OR o.order_id IS NULL`, { month })
+        .andWhere('o.orderStatusOrderStatusId = 4')
+        .groupBy('year, month');
+    }
+
+    return await queryBuilder.getRawMany();
+ // return await this.OrderRepository.query('SELECT YEAR(date_created) AS year, MONTHNAME(date_created) AS month, SUM(total_sale) AS total_orders FROM orders WHERE orderStatusOrderStatusId = 4 GROUP BY month, month ORDER BY year, month;');
 }
-  
-  */
 
 async getOrdersdeliveryBydate(order: any) {
   let ID = order.state;
@@ -222,6 +246,20 @@ async getByheadervariant(order: any) {
       where: [{ User: _id }],
     });
   }
+  async getOrderbyEmail(_id: string) {
+    return await this.OrderRepository.find({
+      relations: [
+        'User',
+        'OrderStatus',
+        'Paymethod',
+        'orderproduct',
+        'orderproduct.product',
+        'Restaurant',
+        'Transaction',
+      ],
+      where: [{ customeremail: _id }],
+    });
+  }
 
   async getOrdersUser(order: OrderInterface): Promise<OrderInterface[]> {
     return await this.OrderRepository.find({
@@ -242,6 +280,7 @@ async getByheadervariant(order: any) {
     try {
       const orders = await this.OrderRepository.create(data);
       const result = await this.OrderRepository.save(orders);
+      console.log(data.orderproduct)
       if (result.order_id) {
         for (let index = 0; index < data.orderproduct.length; index++) {
           const dataset = {
@@ -261,9 +300,10 @@ async getByheadervariant(order: any) {
               order_id: result.order_id,
             },
           };
+         
           await this.orderProductService.CreateOrderProdut(dataset);
         }
-        this.deliveryMail(result.order_id, 'Creado');
+    //    this.deliveryMail(result.order_id, 'Creado');
         return orders;
       }
     } catch (error) {
@@ -339,10 +379,10 @@ async getByheadervariant(order: any) {
             const element = list[0][index];
             console.log(element.order_id)
           } 
-          this.deliveryMail(result.order_id, 'Actualizado');
+         // this.deliveryMail(result.order_id, 'Actualizado');
           return result;
         } else {
-          this.deliveryMail(result.order_id, 'Actualizado');
+        //  this.deliveryMail(result.order_id, 'Actualizado');
           return result;
         }
        // const resultindex = await this.UpdateIndex(); 

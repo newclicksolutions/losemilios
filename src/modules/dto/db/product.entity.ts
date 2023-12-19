@@ -20,6 +20,10 @@ export class ProductEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   product_id: number;
 
+
+  @Column('timestamp', {default: () => 'CURRENT_TIMESTAMP', onUpdate: ''}) 
+  date_created: Date;
+  
   @Column({ length: 50 })
   title: string;
 

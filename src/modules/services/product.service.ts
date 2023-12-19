@@ -6,6 +6,8 @@ import { ProductEntity } from '../dto/db/product.entity';
 import { Product } from 'aws-sdk/clients/ssm';
 import { UpdateProductInput } from 'aws-sdk/clients/servicecatalog';
 import { UpdateProfileRequestDurationSecondsInteger } from 'aws-sdk/clients/rolesanywhere';
+import { Pagination } from '../dto/interfaces/pagination.dto';
+import { match } from 'assert';
 
 @Injectable()
 export class ProductsService {
@@ -15,21 +17,23 @@ export class ProductsService {
 
   ) {}
   
-  async getProduct(product: CreateProdutcDto): Promise<CreateProdutcDto[]> {
-    const products = await this.productsRepository.find({
-      relations: ['Category','addition']
+  async getProduct(product: number): Promise<CreateProdutcDto[]> {
+    return await this.productsRepository.find({
+      relations: ['Category','addition'],
+      where: [{ product_id: product }],
     });
-  
-    return;
   }
-  
-
-  async getAllProducts(product: CreateProdutcDto) {
+  async getAllProducts(data: Pagination) {
+    const total= await this.productsRepository.count();
     const products = await this.productsRepository.find({
-      relations: ['Category','addition']
+      relations: ['Category','addition'],
+      skip: data.skip,
+      take: data.take,
+      order: {
+        date_created: 'DESC',
+      }  
     });
-  
-    return products;
+    return {totalregistros: total,totalpages: Math.round(total/data.take) , data:products};
   }
 
   async createProducts(product: CreateProdutcDto) {
@@ -48,11 +52,9 @@ export class ProductsService {
     return;
   }
 
-  async deleteProduct(product: CreateProdutcDto): Promise<CreateProdutcDto[]> {
-    const products = await this.productsRepository.find({
-    });
-  
-    return;
+  async deleteProduct(product: CreateProdutcDto) {
+     return await this.productsRepository.delete(product);
+
   }
 
 }

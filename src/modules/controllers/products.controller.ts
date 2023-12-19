@@ -1,19 +1,40 @@
-import { Controller, Get, Post, Put, Param, Delete, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Param, Delete, Body, UseInterceptors,UploadedFile, Query,} from '@nestjs/common';
 import { ProductsService } from '../services/product.service';
 import {CreateProdutcDto} from '../dto/interfaces/products/createproduct.dto';
+var _ = require('lodash');
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { imageFileFilter, exportFileName, editFileName } from '../../config/file-upload.utils';
+import { diskStorage } from 'multer';
+import { Pagination } from '../dto/interfaces/pagination.dto';
+'use strict';
+const excelToJson = require('convert-excel-to-json');
 
 @Controller('products')
 export class ProductsController {
   constructor(private productService: ProductsService) {}
 
   @Get(':id')
-  getProduct(@Param('id') data: CreateProdutcDto) {
+  getProduct(@Param('id') data: number) {
     return this.productService.getProduct(data);
   }
 
   @Get()
-  getAllProducts(data: CreateProdutcDto) {
+  getAllProducts(@Query()data: Pagination) {
     return this.productService.getAllProducts(data);
+  }
+
+  @Post('/upload')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './upload/products',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  async import(@UploadedFile() file) {
+  return file;
   }
 
   @Post()
