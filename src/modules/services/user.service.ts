@@ -10,7 +10,7 @@ import { TemplateClient } from '../../config/template/templates';
 import { throws } from 'assert';
 const templateClient = new TemplateClient();
 
-@Injectable() 
+@Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
@@ -19,18 +19,15 @@ export class UsersService {
 
   async getUsers(user: UsersInterface): Promise<UsersInterface[]> {
     const users = await this.usersRepository.find({
-     relations: [ 'user_type_id', 'restaurant'],
+      relations: ['user_type_id', 'restaurant'],
     });
 
     return users;
   }
 
-
-
-
   async getTopUser(data: UserListInterface) {
     return await this.usersRepository.find({
-      relations: [ 'user_type_id', 'restaurant'],
+      relations: ['user_type_id', 'restaurant'],
       take: 110,
       skip: 0,
     });
@@ -52,7 +49,17 @@ export class UsersService {
 
   public async findOrdersById(id: number): Promise<UserEntity | null> {
     return await this.usersRepository.findOneOrFail({
-      relations: ['user_type_id', 'restaurant','Order'],
+      relations: [
+        'user_type_id',
+        'restaurant',
+        'Order',
+        'Order.OrderStatus',
+        'Order.Paymethod',
+        'Order.orderproduct',
+        'Order.orderproduct.product',
+        'Order.Restaurant',
+        'Order.Transaction',
+      ],
       where: [{ user_id: id }],
     });
   }
@@ -73,7 +80,7 @@ export class UsersService {
 
   async findOne(username: string): Promise<UsersInterface[]> {
     return await this.usersRepository.find({
-      relations: [ 'user_type_id', 'restaurant'],
+      relations: ['user_type_id', 'restaurant'],
       where: [{ user_neme: name }],
     });
   }
@@ -89,9 +96,6 @@ export class UsersService {
     });
   }
 
-
-
-
   async createUser(data: CreateUsersDto) {
     const user = await this.usersRepository.create(data);
     const respon = await this.usersRepository.save(user);
@@ -99,7 +103,6 @@ export class UsersService {
       //this.deliveryMail(respon.user_id, 'Creado')
       return respon;
     }
-    
   }
   async findAll() {
     return await this.usersRepository.find({
@@ -107,35 +110,34 @@ export class UsersService {
     });
   }
 
-  async resetPassword(email:string){
+  async resetPassword(email: string) {
     try {
-      const validuser = await this.findByEmail(email)
-     if (validuser.email) {
-     const newpass = await this.makeid(10)
-     let data = [{user_id:validuser.user_id,user_pass:newpass}]
-     const user = await this.usersRepository.create(data);
-     const respon = await this.usersRepository.save(user);
-     if (respon) {
-/* Z */
-      return { success: true, message: 'Success' }
-     }
-    }
+      const validuser = await this.findByEmail(email);
+      if (validuser.email) {
+        const newpass = await this.makeid(10);
+        let data = [{ user_id: validuser.user_id, user_pass: newpass }];
+        const user = await this.usersRepository.create(data);
+        const respon = await this.usersRepository.save(user);
+        if (respon) {
+          /* Z */
+          return { success: true, message: 'Success' };
+        }
+      }
     } catch (error) {
-      return { success: false, message: error }
+      return { success: false, message: error };
     }
-     
-
   }
 
   async makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    var characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
- }
+  }
   async findAllQuery() {
     return await this.usersRepository
       .createQueryBuilder('users')
@@ -146,15 +148,13 @@ export class UsersService {
   }
   async updateUser(data: UsersInterface) {
     const user = await this.usersRepository.create(data);
-    const respon = await this.usersRepository.update(user.user_id,user);
-      return respon;
-    
+    const respon = await this.usersRepository.update(user.user_id, user);
+    return respon;
   }
 
   async deleteUser(user: UsersInterface) {
     const respont = await this.usersRepository.delete(user);
     if (respont) {
-
       return respont;
     }
   }
@@ -163,31 +163,34 @@ export class UsersService {
     const user = await this.usersRepository.create(data);
     const respon = await this.usersRepository.save(user);
     if (respon.user_id) {
-
       return respon;
     }
   }
 
-
-
-  stado(i){
-switch (i) {
-  case 0:
-    return 'Inactivo'
-    break;
-    case 1:
-    return 'Registrado <br> <br> <a href="https://acre-appfront.herokuapp.com/login">Ingresa aqui, Has click en la casilla "Olvidaste la contraseña"</a>'
-    break;
-  default:
-    break;
-}
+  stado(i) {
+    switch (i) {
+      case 0:
+        return 'Inactivo';
+        break;
+      case 1:
+        return 'Registrado <br> <br> <a href="https://acre-appfront.herokuapp.com/login">Ingresa aqui, Has click en la casilla "Olvidaste la contraseña"</a>';
+        break;
+      default:
+        break;
+    }
   }
 
   async UserDealerPriority(user: number) {
-    let ID = user
-    return await this.usersRepository.query('select r.restaurant_id as id,name, r.address,r.priority,"2" as type from restaurant r inner join restaurant_user_users ur on r.restaurant_id= ur.restaurantRestaurantId where ur.usersUserId = '+ID+' and r.deletedAt is null union select user_id as id, CONCAT(name," ",last_name) as name, shipping_address as address, priority,"1" as type from users where clientTypeIdClientTypeId = 1 and deletedAt is null and dealer = '+ID+'');
+    let ID = user;
+    return await this.usersRepository.query(
+      'select r.restaurant_id as id,name, r.address,r.priority,"2" as type from restaurant r inner join restaurant_user_users ur on r.restaurant_id= ur.restaurantRestaurantId where ur.usersUserId = ' +
+        ID +
+        ' and r.deletedAt is null union select user_id as id, CONCAT(name," ",last_name) as name, shipping_address as address, priority,"1" as type from users where clientTypeIdClientTypeId = 1 and deletedAt is null and dealer = ' +
+        ID +
+        '',
+    );
   }
-/* 
+  /* 
   async deliveryMail(_ID: number, state: string) {
     const templateClient = new TemplateClient();
     const options = await this.optionsService.getConfig(1);
