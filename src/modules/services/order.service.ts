@@ -161,6 +161,7 @@ export class OrderService {
   }
 
   async updateState(order: number, state: number) {
+    console.log(state)
     const query = await this.OrderRepository.createQueryBuilder('orders')
       .update()
       .set({ OrderStatus: { order_status_id: state } })
