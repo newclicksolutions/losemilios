@@ -37,6 +37,7 @@ export class TransactionService {
     const transaction = await this.transactionRepository.create(data);
     const restasnaccion = await this.transactionRepository.save(transaction); 
     if (restasnaccion.order.order_id) {
+      console.log(restasnaccion.transaction_state_number)
       if (restasnaccion.transaction_state_number === 6) {
         this.orderService.updateState(restasnaccion.order.order_id,6)
       }else{
