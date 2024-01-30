@@ -23,9 +23,8 @@ export class TransactionController {
   getTransaction() {
     return this.service.findAll();
   }
-
-  @Get(':id')
-  createTransaction(
+  @Get('/payu')
+  createTransactionget(
     @Query('TX_VALUE') TX_VALUE: number,
     @Query('currency') currency: string,
     @Query('transactionState') transactionState: number,
@@ -38,10 +37,43 @@ export class TransactionController {
     @Query('lapPaymentMethodType') lapPaymentMethodType: string,
     @Query('pseBank') pseBank: string,
     @Query('description') description: string,
-    @Param() params,
   ) {
     const data = {
-      order: { order_id: params.id },
+      order: { order_id: referenceCode },
+      tx_value: TX_VALUE,
+      currency: currency,
+      transaction_state_number: transactionState,
+      transaction_state_label: lapTransactionState,
+      cus: cus,
+      reference_pol: reference_pol,
+      signature: signature,
+      reference_code: referenceCode,
+      transaction_id_payu: transactionId,
+      lap_payment_method: lapPaymentMethodType,
+      pse_bank: pseBank,
+      description: description,
+  }
+  console.log("payU confirmation Url")
+  return this.service.create(data);
+  }
+
+  @Post('/payu')
+  createTransactionpost(
+    @Query('TX_VALUE') TX_VALUE: number,
+    @Query('currency') currency: string,
+    @Query('transactionState') transactionState: number,
+    @Query('lapTransactionState') lapTransactionState: string,
+    @Query('cus') cus: string,
+    @Query('reference_pol') reference_pol: string,
+    @Query('signature') signature: string,
+    @Query('referenceCode') referenceCode: string,
+    @Query('transactionId') transactionId: string,
+    @Query('lapPaymentMethodType') lapPaymentMethodType: string,
+    @Query('pseBank') pseBank: string,
+    @Query('description') description: string,
+  ) {
+    const data = {
+      order: { order_id: referenceCode },
       tx_value: TX_VALUE,
       currency: currency,
       transaction_state_number: transactionState,
