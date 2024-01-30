@@ -71,6 +71,7 @@ export class TransactionController {
     @Query('lapPaymentMethodType') lapPaymentMethodType: string,
     @Query('pseBank') pseBank: string,
     @Query('description') description: string,
+    @Body() datos:any
   ) {
     const data = {
       order: { order_id: referenceCode },
@@ -89,6 +90,8 @@ export class TransactionController {
   }
   console.log("------------------------------------------------------")
   console.log("payU confirmation Url")
+  console.log(datos)
+  console.log("------------------------------------------------------")
   console.log(data)
   console.log("-------------------------------------------------------")
   return this.service.create(data);
