@@ -42,7 +42,7 @@ export class TransactionService {
       }else{
         this.orderService.updateState(restasnaccion.order.order_id,2)
       }
-      this.deliveryMail(restasnaccion.transaction_id)
+     // this.deliveryMail(restasnaccion.transaction_id)
       return restasnaccion
     }
     } catch (error) {
