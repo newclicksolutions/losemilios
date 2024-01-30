@@ -53,6 +53,7 @@ export class OederProdutsEntity extends BaseEntity {
   @ManyToOne(
     type => ProductEntity,
     product => product.orderproduct,
+    { onDelete: 'CASCADE' }
   )
   public product!: ProductEntity;
 }
