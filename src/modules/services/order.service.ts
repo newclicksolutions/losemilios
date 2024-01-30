@@ -161,7 +161,6 @@ export class OrderService {
   }
 
   async updateState(order: number, state: number) {
-    console.log(state)
     const query = await this.OrderRepository.createQueryBuilder('orders')
       .update()
       .set({ OrderStatus: { order_status_id: state } })
@@ -309,7 +308,6 @@ export class OrderService {
     try {
       const orders = await this.OrderRepository.create(data);
       const result = await this.OrderRepository.save(orders);
-      console.log(data.orderproduct);
       if (result.order_id) {
         for (let index = 0; index < data.orderproduct.length; index++) {
           const dataset = {
