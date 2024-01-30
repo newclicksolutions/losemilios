@@ -57,6 +57,7 @@ export class ProductEntity extends BaseEntity {
   @OneToMany(
     type => GaleryEntity,
     skuid => skuid.sku_produt_id,
+    { onDelete: 'CASCADE' } 
   )
   Skuid: GaleryEntity[];
 
@@ -77,6 +78,7 @@ export class ProductEntity extends BaseEntity {
   @OneToMany(
     type => OederProdutsEntity,
     orderproduct => orderproduct.product,
+    { onDelete: 'CASCADE' }
   )
   public orderproduct!: OederProdutsEntity[];
 
