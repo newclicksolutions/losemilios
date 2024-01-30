@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { RestaurantEntity } from '../dto/db/restaurant.entity';
 import { RestaurentInterface } from '../dto/interfaces/restaurant/restaurant.interface';
 import { UsersService } from '../services/user.service';
@@ -16,6 +16,7 @@ export class RestauratService {
   async getrestaurants(): Promise<RestaurentInterface[]> {
     return await this.RestaurantRepository.find({
       relations: ['user','user.user_type_id'],
+      where: [{deletedAt: IsNull() }],
     });
   }
 
@@ -30,7 +31,7 @@ export class RestauratService {
   async getRestaurant(_id: number): Promise<RestaurentInterface[]> {
     return await this.RestaurantRepository.find({
       relations: ['user','user.user_type_id'],
-      where: [{ restaurant_id: _id }],
+      where: [{ restaurant_id: _id , deletedAt: IsNull() }],
     });
   }
   /*

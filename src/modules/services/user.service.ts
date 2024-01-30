@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { UserEntity } from '../dto/db/user.entity';
 import { UsersInterface } from '../dto/interfaces/user/user.Interface';
 import { UserListInterface } from '../dto/interfaces/user/userlist.Interface';
@@ -20,6 +20,7 @@ export class UsersService {
   async getUsers(user: UsersInterface): Promise<UsersInterface[]> {
     const users = await this.usersRepository.find({
       relations: ['user_type_id', 'restaurant'],
+      where: [{deletedAt: IsNull() }],
     });
 
     return users;
@@ -28,6 +29,7 @@ export class UsersService {
   async getTopUser(data: UserListInterface) {
     return await this.usersRepository.find({
       relations: ['user_type_id', 'restaurant'],
+      where: [{deletedAt: IsNull() }],
       take: 110,
       skip: 0,
     });
@@ -43,7 +45,7 @@ export class UsersService {
   public async findById(id: number): Promise<UserEntity | null> {
     return await this.usersRepository.findOneOrFail({
       relations: ['user_type_id', 'restaurant'],
-      where: [{ user_id: id }],
+      where: [{ user_id: id ,deletedAt: IsNull() }],
     });
   }
 
@@ -60,14 +62,14 @@ export class UsersService {
         'Order.Restaurant',
         'Order.Transaction',
       ],
-      where: [{ user_id: id }],
+      where: [{ user_id: id ,deletedAt: IsNull() }],
     });
   }
 
   async getUser(_id: number): Promise<UsersInterface[]> {
     return await this.usersRepository.find({
       relations: ['user_type_id', 'restaurant'],
-      where: [{ user_id: _id }],
+      where: [{ user_id: _id ,deletedAt: IsNull() }],
     });
   }
   /*
@@ -86,13 +88,13 @@ export class UsersService {
   }
   async findemail(email: string): Promise<UsersInterface[]> {
     return await this.usersRepository.find({
-      where: [{ email: email }],
+      where: [{ email: email ,deletedAt: IsNull() }],
     });
   }
 
   async findusername(username: string): Promise<UsersInterface[]> {
     return await this.usersRepository.find({
-      where: [{ user_login: username }],
+      where: [{ user_login: username ,deletedAt: IsNull() }],
     });
   }
 
