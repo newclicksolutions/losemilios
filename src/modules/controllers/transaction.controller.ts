@@ -87,7 +87,10 @@ export class TransactionController {
       pse_bank: pseBank,
       description: description,
   }
+  console.log("------------------------------------------------------")
   console.log("payU confirmation Url")
+  console.log(data)
+  console.log("-------------------------------------------------------")
   return this.service.create(data);
   }
 }
