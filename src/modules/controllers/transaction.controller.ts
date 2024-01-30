@@ -60,7 +60,7 @@ export class TransactionController {
   @Post('/payu')
   createTransactionpost(@Body() datos: any) {
     {
-      const data = {
+      const dataSet = {
         order: { order_id: datos.reference_sale },
         tx_value: datos.value,
         currency: datos.currency,
@@ -69,9 +69,9 @@ export class TransactionController {
         cus: datos.payment_request_state,
         reference_pol: datos.reference_pol,
         signature: datos.sign,
-        reference_code: datos,
+        reference_code: datos.reference_sale,
         transaction_id_payu: datos.transaction_id,
-        lap_payment_method: datos,
+        lap_payment_method: datos.payment_method_name,
         pse_bank: datos.pse_bank,
         description: datos.description,
       };
@@ -79,7 +79,7 @@ export class TransactionController {
       console.log('payU confirmation Url');
       console.log(datos);
       console.log('------------------------------------------------------');
-      return this.service.create(data);
+      return this.service.create(dataSet);
     }
   }
 }
