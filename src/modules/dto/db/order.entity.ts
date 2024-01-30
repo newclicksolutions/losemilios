@@ -45,7 +45,7 @@ export class OrderEntity extends   BaseEntity{
   @Column()
   tax_amount: number;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP'})
   shipped_date: Date;
 
   @BeforeInsert()

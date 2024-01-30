@@ -5,9 +5,10 @@ import { TransactionController } from '../controllers/transaction.controller';
 import { TransactionEntity } from '../dto/db/transaction.entity';
 import { MailModule } from './mail.module';
 import { optionsModule } from './options.module';
+import { OrderModule } from './order.module';
 
 @Module({
-  imports: [optionsModule,MailModule,TypeOrmModule.forFeature([TransactionEntity])],
+  imports: [OrderModule,optionsModule,MailModule,TypeOrmModule.forFeature([TransactionEntity])],
   providers: [TransactionService],
   controllers: [TransactionController],
   exports: [TransactionService],

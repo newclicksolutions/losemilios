@@ -6,6 +6,7 @@ import { TransactionInterface } from '../dto/interfaces/transaction/transaction.
 import { MailService } from '../services/mail.service';
 import { TemplateClient } from '../../config/template/templates';
 import { OptionsService } from '../services/options.service';
+import { OrderService } from '../services/order.service';
 
 @Injectable()
 export class TransactionService {
@@ -13,6 +14,7 @@ export class TransactionService {
     @InjectRepository(TransactionEntity)
     private transactionRepository: Repository<TransactionEntity>,
     private readonly mailService: MailService,
+    private readonly orderService: OrderService,
     private readonly optionsService: OptionsService,
   ) {}
 
@@ -35,6 +37,11 @@ export class TransactionService {
     const transaction = await this.transactionRepository.create(data);
     const restasnaccion = await this.transactionRepository.save(transaction); 
     if (restasnaccion.order.order_id) {
+      if (restasnaccion.transaction_state_label === "DECLINED") {
+        this.orderService.updateState(restasnaccion.order.order_id,6)
+      }else{
+        this.orderService.updateState(restasnaccion.order.order_id,2)
+      }
       this.deliveryMail(restasnaccion.transaction_id)
       return restasnaccion
     }

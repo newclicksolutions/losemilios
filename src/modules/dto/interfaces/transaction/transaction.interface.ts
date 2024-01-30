@@ -1,6 +1,6 @@
 export interface TransactionInterface {
     order: any;
-    transaction_id: number;
+    transaction_id?: number;
     tx_value: number;
     currency: string;
     transaction_state_number: number;
