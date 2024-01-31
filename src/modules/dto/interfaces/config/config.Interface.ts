@@ -13,5 +13,8 @@ export interface ConfigInterface {
   payu_apikey: string;
   payu_apilogin: string;
   payu_merchant_id: string;
+  payu_accountId: string;
+  payu_url: string;
+  payu_test: number;
   sendgrid_apikey: string;
 }

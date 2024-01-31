@@ -53,5 +53,14 @@ export class ConfigEntity extends BaseEntity {
   payu_merchant_id: string;
 
   @Column({ length: 250 })
+  payu_accountId: string;
+
+  @Column({ length: 250 })
+  payu_url: string;
+
+  @Column()
+  payu_test: number;
+
+  @Column({ length: 250 })
   sendgrid_apikey: string;
 }
