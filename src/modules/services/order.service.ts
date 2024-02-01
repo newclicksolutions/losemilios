@@ -166,6 +166,9 @@ export class OrderService {
       .set({ OrderStatus: { order_status_id: state } })
       .where('orders.order_id = :order ', { order })
       .execute();
+      if (state == 2) {
+        this.deliveryMail(order, 'Creado');
+      }
     return query;
   }
 
@@ -327,10 +330,12 @@ export class OrderService {
               order_id: result.order_id,
             },
           };
-
           await this.orderProductService.CreateOrderProdut(dataset);
         }
-       this.deliveryMail(result.order_id, 'Creado');
+        if ((result.OrderStatus.order_status_id = 1)) {
+          this.deliveryMail(result.order_id, 'Creado');
+        }
+
         return orders;
       }
     } catch (error) {
@@ -355,16 +360,16 @@ export class OrderService {
         ],
         where: [{ order_id: _ID }],
       });
-      await this.mailService.Sendemail(
-        {
-          to: orders[0].customeremail,
-          from: options.notify_email,
-          subject: 'Hola, ' + orders[0].customername,
-          text: 'Su pedido #' + orders[0].order_id + ' fue creado!',
-          html: 'http://localhost:3000/pedidos-'+orders[0].order_id,
-          template: "neworder"
-        },
-      );
+      await this.mailService.Sendemail({
+        to: orders[0].customeremail,
+        from: options.notify_email,
+        subject: 'Hola, ' + orders[0].customername,
+        text: 'Su pedido #' + orders[0].order_id + ' fue creado!',
+        html:
+          'https://domicilios.losemilios.com/pedidos?referenceCode=' +
+          orders[0].order_id,
+        template: 'neworder',
+      });
     } catch (error) {
       console.log(error);
       return error;
