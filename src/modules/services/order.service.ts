@@ -364,6 +364,7 @@ export class OrderService {
           },
           subject: 'Su pedido #' + orders[0].order_id + ' fue creado!',
           html: 'http://localhost:3000/pedidos-'+orders[0].order_id,
+          template: "quote"
         },
       );
     } catch (error) {
