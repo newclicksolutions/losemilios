@@ -166,9 +166,6 @@ export class OrderService {
       .set({ OrderStatus: { order_status_id: state } })
       .where('orders.order_id = :order ', { order })
       .execute();
-      if (state == 2) {
-        this.deliveryMail(order, 'Creado');
-      }
     return query;
   }
 
@@ -332,10 +329,7 @@ export class OrderService {
           };
           await this.orderProductService.CreateOrderProdut(dataset);
         }
-        if ((result.OrderStatus.order_status_id = 1)) {
-          this.deliveryMail(result.order_id, 'Creado');
-        }
-
+        this.deliveryMail(result.order_id, 'Creado');
         return orders;
       }
     } catch (error) {
