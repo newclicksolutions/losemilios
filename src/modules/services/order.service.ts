@@ -330,7 +330,7 @@ export class OrderService {
 
           await this.orderProductService.CreateOrderProdut(dataset);
         }
-        //    this.deliveryMail(result.order_id, 'Creado');
+       this.deliveryMail(result.order_id, 'Creado');
         return orders;
       }
     } catch (error) {
@@ -340,7 +340,6 @@ export class OrderService {
   }
 
   async deliveryMail(_ID: number, state: string) {
-    const templateClient = new TemplateClient();
     const options = await this.optionsService.getConfig(1);
     try {
       const orders = await this.OrderRepository.find({
@@ -356,38 +355,17 @@ export class OrderService {
         ],
         where: [{ order_id: _ID }],
       });
-      await this.mailService.Sendemail([
+      await this.mailService.Sendemail(
         {
-          to: orders[0].User[0].email,
+          to: orders[0].customeremail,
           from: {
             email: options.notify_email,
-            name: 'Acre Comercializadora',
+            name: 'Pedido los emilios',
           },
-          subject: 'Su pedido #' + orders[0].order_id + ' fue ' + state + '!',
-          html: templateClient.Orders(
-            state,
-            orders[0],
-            state == 'Creado'
-              ? options.ordercreated_email_message
-              : options.orderupdate_email_message,
-          ),
+          subject: 'Su pedido #' + orders[0].order_id + ' fue creado!',
+          html: 'http://localhost:3000/pedidos-'+orders[0].order_id,
         },
-        /*         {
-          to: "notify@admin.co",
-          from: {
-            email: options.notify_email,
-            name: 'Acre Admin',
-          },
-          subject: 'ACRE admin, Pedido ' + state + '',
-          html: templateClient.OrdersAdmin(
-            state,
-            orders[0],
-            state == 'Creado'
-              ? options.notify_email_message
-              : options.orderupdate_email_message,
-          ),
-        }, */
-      ]);
+      );
     } catch (error) {
       console.log(error);
       return error;

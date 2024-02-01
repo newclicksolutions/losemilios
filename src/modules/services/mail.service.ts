@@ -1,29 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { InjectSendGrid, SendGridService } from '@ntegral/nestjs-sendgrid';
 import { MailInterface } from '../dto/interfaces/mail/mail.interface';
+import {TemplateService} from './template.service'
+import * as fs from 'fs';
+import * as handlebars from 'handlebars';
 const nodemailer = require("nodemailer");
 const testAccount = nodemailer.createTestAccount();
 const transporter = nodemailer.createTransport({
   host: "smtp.mailtrap.io",
   port: 2525,
   auth: {
-    user: "5a15a495192ccf",
-    pass: "726374136ae8c0"
+    user: "8c491d2ca6aef9",
+    pass: "37e9fdeb5d4761"
   }
 });
+
 @Injectable()
 export class MailService {
   public constructor(
     @InjectSendGrid() private readonly client: SendGridService,
+    private readonly templateService: TemplateService,
   ) {}
   async Sendemail(data: any) {
-    if (process.env.MAiLENV=='true') {
-      console.log(data)
-      for (let index = 0; index < data.length; index++) {
-        await transporter.sendMail(data[index]);
-      }
+    data.html = this.templateService.loadAndCompileTemplate(data.template+'.hbs', data);
+    if (true) {
+      console.log("mailtrap ........")
+        await transporter.sendMail(data);
     }else{ 
-      return await this.client.send(data); 
+      console.log(" SendGrid .......")
+      try {
+        return await this.client.send(data); 
+      } catch (error) {
+        console.log(error)
+      }
+      
     }
   }
 
@@ -31,5 +41,3 @@ export class MailService {
     return await this.client.sendMultiple(data);
   }
 }
-
-
