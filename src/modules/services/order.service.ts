@@ -358,13 +358,11 @@ export class OrderService {
       await this.mailService.Sendemail(
         {
           to: orders[0].customeremail,
-          from: {
-            email: options.notify_email,
-            name: 'Pedido los emilios',
-          },
-          subject: 'Su pedido #' + orders[0].order_id + ' fue creado!',
+          from: options.notify_email,
+          subject: 'Hola, ' + orders[0].customername,
+          text: 'Su pedido #' + orders[0].order_id + ' fue creado!',
           html: 'http://localhost:3000/pedidos-'+orders[0].order_id,
-          template: "quote"
+          template: "neworder"
         },
       );
     } catch (error) {
