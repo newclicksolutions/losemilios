@@ -130,7 +130,7 @@ export class UsersService {
             text: 'Su nueva contraseña es: ' + newpass ,
             html:
               'https://domicilios.losemilios.com/login',
-            template: 'neworder',
+            template: 'passwordreset',
           });
           return { success: true, message: 'Success' };
         }
