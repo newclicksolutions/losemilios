@@ -6,6 +6,7 @@ import { UsersInterface } from '../dto/interfaces/user/user.Interface';
 import { UserListInterface } from '../dto/interfaces/user/userlist.Interface';
 import { CreateUsersDto } from '../dto/interfaces/user/dto/createuser.dto';
 import { TemplateClient } from '../../config/template/templates';
+import { MailService } from '../services/mail.service';
 
 import { throws } from 'assert';
 const templateClient = new TemplateClient();
@@ -15,6 +16,7 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
+    private readonly mailService: MailService,
   ) {}
 
   async getUsers(user: UsersInterface): Promise<UsersInterface[]> {
@@ -121,7 +123,15 @@ export class UsersService {
         const user = await this.usersRepository.create(data);
         const respon = await this.usersRepository.save(user);
         if (respon) {
-          /* Z */
+          await this.mailService.Sendemail({
+            to: email,
+            from: 'info@losemilios.com',
+            subject: 'Hola, hemos recibido una solicitud para restablecer tu contraseña' ,
+            text: 'Su nueva contraseña es: ' + newpass ,
+            html:
+              'https://domicilios.losemilios.com/login',
+            template: 'neworder',
+          });
           return { success: true, message: 'Success' };
         }
       }
