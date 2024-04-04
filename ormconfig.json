@@ -2,7 +2,7 @@
 {
   "type": "mysql",
   "host": "localhost",
-  "username": "root",
+  "username": "emilioadmin",
   "password": "dev164123",
   "database": "emiliobd",
   "entities": ["dist/**/*.entity{.ts,.js}"],
