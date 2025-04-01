@@ -17,12 +17,12 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
     private readonly mailService: MailService,
-  ) {}
+  ) { }
 
   async getUsers(user: UsersInterface): Promise<UsersInterface[]> {
     const users = await this.usersRepository.find({
       relations: ['user_type_id', 'restaurant'],
-      where: [{deletedAt: IsNull() }],
+      where: [{ deletedAt: IsNull() }],
     });
 
     return users;
@@ -31,7 +31,7 @@ export class UsersService {
   async getTopUser(data: UserListInterface) {
     return await this.usersRepository.find({
       relations: ['user_type_id', 'restaurant'],
-      where: [{deletedAt: IsNull() }],
+      where: [{ deletedAt: IsNull() }],
       take: 110,
       skip: 0,
     });
@@ -45,11 +45,17 @@ export class UsersService {
   }
 
   public async findById(id: number): Promise<UserEntity | null> {
-    return await this.usersRepository.findOneOrFail({
-      relations: ['user_type_id', 'restaurant'],
-      where: [{ user_id: id ,deletedAt: IsNull() }],
-    });
+    try {
+      return await this.usersRepository.findOne({
+        relations: ['user_type_id', 'restaurant'],
+        where: { user_id: id, deletedAt: IsNull() },
+      });
+    } catch (error) {
+      console.error('Error fetching user by ID:', error);
+      return null;
+    }
   }
+  
 
   public async findOrdersById(id: number) {
     return await this.usersRepository.find({
@@ -64,14 +70,14 @@ export class UsersService {
         'Order.Restaurant',
         'Order.Transaction',
       ],
-      where: [{ user_id: id ,deletedAt: IsNull() }],
+      where: [{ user_id: id, deletedAt: IsNull() }],
     });
   }
 
   async getUser(_id: number): Promise<UsersInterface[]> {
     return await this.usersRepository.find({
       relations: ['user_type_id', 'restaurant'],
-      where: [{ user_id: _id ,deletedAt: IsNull() }],
+      where: [{ user_id: _id, deletedAt: IsNull() }],
     });
   }
   /*
@@ -90,13 +96,13 @@ export class UsersService {
   }
   async findemail(email: string): Promise<UsersInterface[]> {
     return await this.usersRepository.find({
-      where: [{ email: email ,deletedAt: IsNull() }],
+      where: [{ email: email, deletedAt: IsNull() }],
     });
   }
 
   async findusername(username: string): Promise<UsersInterface[]> {
     return await this.usersRepository.find({
-      where: [{ user_login: username ,deletedAt: IsNull() }],
+      where: [{ user_login: username, deletedAt: IsNull() }],
     });
   }
 
@@ -126,8 +132,8 @@ export class UsersService {
           await this.mailService.Sendemail({
             to: email,
             from: 'info@losemilios.com',
-            subject: 'Hola, hemos recibido una solicitud para restablecer tu contraseña' ,
-            text: 'Su nueva contraseña es: ' + newpass ,
+            subject: 'Hola, hemos recibido una solicitud para restablecer tu contraseña',
+            text: 'Su nueva contraseña es: ' + newpass,
             html:
               'https://domicilios.losemilios.com/login',
             template: 'passwordreset',
@@ -196,10 +202,10 @@ export class UsersService {
     let ID = user;
     return await this.usersRepository.query(
       'select r.restaurant_id as id,name, r.address,r.priority,"2" as type from restaurant r inner join restaurant_user_users ur on r.restaurant_id= ur.restaurantRestaurantId where ur.usersUserId = ' +
-        ID +
-        ' and r.deletedAt is null union select user_id as id, CONCAT(name," ",last_name) as name, shipping_address as address, priority,"1" as type from users where clientTypeIdClientTypeId = 1 and deletedAt is null and dealer = ' +
-        ID +
-        '',
+      ID +
+      ' and r.deletedAt is null union select user_id as id, CONCAT(name," ",last_name) as name, shipping_address as address, priority,"1" as type from users where clientTypeIdClientTypeId = 1 and deletedAt is null and dealer = ' +
+      ID +
+      '',
     );
   }
   /* 

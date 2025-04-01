@@ -37,13 +37,17 @@ export class OrderController {
   getByyearl() {
     return this.service.getOrderByYear();
   }
-
+ 
 
   
   //@UseGuards(AuthGuard('local'))
   @Get()
   getall(@Query() data: Pagination) {
     return this.service.getOrders(data);
+  } 
+  @Get('/By/Deliver/:userId')
+  getallBydeliver(@Query() data: Pagination,@Param() params) {
+    return this.service.getOrdersByDeliver(data,params.userId);
   } 
 
   @Post('/orderdelivery')

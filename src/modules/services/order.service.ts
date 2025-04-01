@@ -46,6 +46,38 @@ export class OrderService {
     };
   }
 
+
+  async getOrdersByDeliver(data: Pagination, userId: number) {
+    // Contar las órdenes asociadas a un usuario específico
+    const total = await this.OrderRepository.createQueryBuilder('order')
+      .leftJoinAndSelect('order.User', 'user')  // Unir la relación 'User' (asumiendo que es ManyToMany o OneToMany)
+      .where('user.user_id = :userId', { userId })  // Filtrar por el user_id
+      .getCount();
+  
+    // Obtener las órdenes con los mismos filtros aplicados
+    const orders = await this.OrderRepository.createQueryBuilder('order')
+      .leftJoinAndSelect('order.User', 'user')  // Unir la relación 'User'
+      .leftJoinAndSelect('user.user_type_id', 'userType')  // Unir la relación 'user_type_id' si es necesario
+      .leftJoinAndSelect('order.OrderStatus', 'orderStatus')
+      .leftJoinAndSelect('order.Paymethod', 'paymethod')
+      .leftJoinAndSelect('order.orderproduct', 'orderproduct')
+      .leftJoinAndSelect('orderproduct.product', 'product')
+      .leftJoinAndSelect('order.Restaurant', 'restaurant')
+      .leftJoinAndSelect('order.Transaction', 'transaction')
+      .where('user.user_id = :userId', { userId })  // Filtrar por el user_id
+      .skip(data.skip)
+      .take(data.take)
+      .orderBy('order.date_created', 'DESC')
+      .getMany();
+  
+    return {
+      totalregistros: total,
+      totalpages: Math.round(total / data.take),
+      data: orders,
+    };
+  }
+  
+
   async getOrderByYear() {
     const months = [
       'Ene',

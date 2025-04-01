@@ -13,5 +13,6 @@ export interface UsersInterface {
   priority: number;
   dealer: number;
   deletedAt: Date;
+  role?
   // limit: number;
 }

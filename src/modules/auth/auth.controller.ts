@@ -10,6 +10,7 @@ import {
   Put,
   Param,
   Delete,
+  HttpException,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -26,7 +27,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
-  ) {}
+  ) { }
 
   @Post('register')
   public async register(
@@ -40,6 +41,36 @@ export class AuthController {
     return res.status(HttpStatus.OK).json(result);
   }
 
+  @Post('AUTHORIZED-token')
+  async verificarToken(@Body('token') token: string) {
+    try {
+      // Verificamos el token
+      const decodedToken = await this.authService.verificarToken(token);
+
+      // Obtenemos el usuario de la base de datos
+      const user = await this.usersService.findById(decodedToken.user_id);
+
+      if (!user) {
+        throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
+      }
+
+      // Mapeamos el objeto de usuario para añadir la propiedad 'role'
+      const { user_type_id, ...restOfUser } = user;
+      const userWithRole = {
+        ...restOfUser,
+        user_type_id,  // Mantiene el objeto completo de 'user_type_id'
+        role: user_type_id.user_type_id,  // Añadimos solo el ID del rol
+      };
+
+      // Devolvemos el mensaje con el usuario
+      return { mensaje: 'validToken', user: userWithRole };
+    } catch (error) {
+      console.error('Error al verificar token:', error);
+      throw new HttpException('Token no válido', HttpStatus.UNAUTHORIZED);
+    }
+  }
+
+
   @UseGuards(AuthGuard('local'))
   @Post('login')
   public async login(@Response() res, @Body() login: LoginUserDto) {
@@ -48,7 +79,7 @@ export class AuthController {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         message: 'User Not Found',
       });
-    } else { 
+    } else {
       //debug('start getting the token');
       const token = this.authService.createToken(user);
       //debug(token.accessToken);

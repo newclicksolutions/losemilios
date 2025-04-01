@@ -9,10 +9,11 @@ import { RegistrationStatus } from './dto/registrationStatus.interface';
 import { CreateUsersDto } from '../dto/interfaces/user/dto/createuser.dto';
 import { compare, compareSync } from 'bcryptjs';
 
+
 @Injectable()
 export class AuthService {
   constructor(private readonly usersService: UsersService) {}
-
+  private readonly claveSecreta = 'Codebrains';
   private readonly logger = new Logger(AuthService.name);
 
   async register(user: CreateUsersDto) {
@@ -27,6 +28,18 @@ export class AuthService {
       status = { success: false, message: err };
     }
     return status;
+  }
+
+  verificarToken(token: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, this.claveSecreta, (err, decoded) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(decoded);
+        }
+      });
+    });
   }
   createToken(user: UserEntity) {
     //debug('get the expiration');
