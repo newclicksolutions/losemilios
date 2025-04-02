@@ -18,6 +18,13 @@ export class OptionsController {
   getall(): any {
     return this.service.findAll();
   }
+
+  @Get('/Dashboard/Metrics')
+  DashboardMetrics(): any {
+    return this.service.getDashboardMetrics();
+  }
+
+
   @Get(':id')
   get(@Param() params) {
     return this.service.getone(params.id);
