@@ -121,9 +121,11 @@ export class UsersService {
   }
 
   async resetPassword(email: string) {
+   
     try {
       const validuser = await this.findByEmail(email);
       if (validuser.email) {
+
         const newpass = await this.makeid(10);
         let data = [{ user_id: validuser.user_id, user_pass: newpass }];
         const user = await this.usersRepository.create(data);
@@ -131,7 +133,7 @@ export class UsersService {
         if (respon) {
           await this.mailService.Sendemail({
             to: email,
-            from: 'info@losemilios.com',
+            from: 'domicilios@losemilios.com',
             subject: 'Hola, hemos recibido una solicitud para restablecer tu contraseña',
             text: 'Su nueva contraseña es: ' + newpass,
             html:
