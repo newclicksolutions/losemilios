@@ -10,6 +10,7 @@ ormconfig.json
 # Compiled Java class files
 *.class
 .env
+*.env
 
 # Compiled Python bytecode
 *.py[cod]
