@@ -23,7 +23,7 @@ export class MailService {
   ) {}
   async Sendemail(data: any) {
     data.html = this.templateService.loadAndCompileTemplate(data.template+'.hbs', data);
-    if (true) {
+    if (false) {
       console.log("mailtrap ........")
         await transporter.sendMail(data);
     }else{ 
