@@ -54,6 +54,7 @@ export class TransactionController {
       description: description,
     };
     console.log('payU confirmation Url');
+    console.log(data);
     return this.service.create(data);
   }
 

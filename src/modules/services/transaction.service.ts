@@ -63,7 +63,7 @@ export class TransactionService {
           to: transaccion[0].order.User[0].email,
           from: {
             email: options.notify_email,
-            name: 'Acre Comercializadora',
+            name: 'Los emilios',
           },
           subject: 'La transacción del su pedido #' + transaccion[0].order.order_id + ' fue '+transaccion[0].transaction_state_label+'!',
           html: templateClient.transaccion(
@@ -75,7 +75,7 @@ export class TransactionService {
           to: options.notify_email,
           from: {
             email: options.notify_email,
-            name: 'Acre Admin',
+            name: 'Los emilios',
           },
           subject: 'La transacción del pedido #' + transaccion[0].order.order_id + ' fue '+transaccion[0].transaction_state_label+'!',
           html: templateClient.transaccion(
