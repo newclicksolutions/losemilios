@@ -92,7 +92,7 @@ export class UserEntity {
   @Column()
   user_status: number;
  
-  @Column('timestamp')
+  @Column('timestamp', {default: () => 'CURRENT_TIMESTAMP', onUpdate: ''}) 
   user_registered: Timestamp;
 
   @ManyToOne(

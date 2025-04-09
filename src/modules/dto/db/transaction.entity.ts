@@ -58,7 +58,7 @@ import {
     @Column({ length: 245 })
     description: string;
 
-    @Column('timestamp')
+    @Column('timestamp', {default: () => 'CURRENT_TIMESTAMP', onUpdate: ''}) 
     created: Timestamp;
 
   }
