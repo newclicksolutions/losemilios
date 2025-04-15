@@ -2,6 +2,7 @@ export interface ProductInterface {
     product_id: number;
     date_created:Date;
     name: string;
+    options: string;
     unit: string;
     tax: number;
     deletedAt: Date;

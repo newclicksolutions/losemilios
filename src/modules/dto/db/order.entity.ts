@@ -69,6 +69,9 @@ export class OrderEntity extends   BaseEntity{
   shipping: String;
 
   @Column({ length: 950 })
+  shipping_neighborhood: String;
+
+  @Column({ length: 950 })
   ship: String;
 
   @Column({ length: 90 })

@@ -10,6 +10,7 @@ export interface UsersInterface {
   user_pass: string;
   user_status: number;
   shipping_address: string;
+  shipping_neighborhood: string;
   priority: number;
   dealer: number;
   deletedAt: Date;

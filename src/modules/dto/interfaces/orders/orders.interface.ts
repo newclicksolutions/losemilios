@@ -6,6 +6,7 @@ export interface OrderInterface {
   shipping_amount: number;
   total_sale: number;
   shipping: String;
+  shipping_neighborhood: String;
   reference_code:String;
   ship: String;
   orderproduct 

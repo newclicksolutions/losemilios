@@ -36,6 +36,9 @@ export class ProductEntity extends BaseEntity {
   @Column({ length: 950 })
   content: String;
 
+  @Column({ length: 950 })
+  options: String;
+
   @Column({ length: 250 })
   unit: string;
 

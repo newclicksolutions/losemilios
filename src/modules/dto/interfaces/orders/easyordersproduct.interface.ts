@@ -6,4 +6,5 @@ export interface EasyOrderProductInterface {
   name: string;
   nota: string;
   details: string;
+  options: string;
 }

@@ -51,6 +51,9 @@ export class UserEntity {
   @Column({ length: 950 })
   shipping_address: string;
 
+  @Column({ length: 950 })
+  shipping_neighborhood: string;
+
   @Column()
   priority: number;
 

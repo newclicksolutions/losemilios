@@ -44,6 +44,9 @@ export class OederProdutsEntity extends BaseEntity {
   @Column({ length: 950 })
   public aditions!: string;
 
+  @Column({ length: 950 })
+  public options!: string;
+
   @ManyToOne(
     type => OrderEntity,
     order => order.orderproduct,

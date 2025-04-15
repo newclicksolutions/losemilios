@@ -11,6 +11,7 @@ export class CreateUsersDto {
   user_status: number;
   // limit: number;
   shipping_address: string;
+  shipping_neighborhood: string;
   document: string;
   reference_id: number;
   priority: number;

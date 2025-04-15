@@ -17,4 +17,6 @@ export interface ConfigInterface {
   payu_url: string;
   payu_test: number;
   sendgrid_apikey: string;
+  payu_enabled: number;
+  payQR: string;
 }

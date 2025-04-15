@@ -61,6 +61,12 @@ export class ConfigEntity extends BaseEntity {
   @Column()
   payu_test: number;
 
+  @Column()
+  payu_enabled: number;
+
+  @Column({ length: 250 })
+  payQR: string;
+
   @Column({ length: 250 })
   sendgrid_apikey: string;
 }
