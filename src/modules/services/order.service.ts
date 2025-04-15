@@ -355,6 +355,7 @@ export class OrderService {
             name: data.orderproduct[index].name,
             nota: data.orderproduct[index].nota,
             aditions: data.orderproduct[index].aditions,
+            options: data.orderproduct[index].options,
             product: {
               product_id: data.orderproduct[index].product_id,
             },
