@@ -67,8 +67,17 @@ export class ConfigEntity extends BaseEntity {
   @Column({ length: 250 })
   payQR: string;
 
+  @Column({ length: 250 })
+  payQRdescription: string;
+
   @Column({ length: 950 })
   optionsproducts: string;
+
+  @Column({ length: 950 })
+  neighborhood_list: string;
+
+  @Column({ length: 950 })
+  configOptions: string;
 
   @Column({ length: 250 })
   sendgrid_apikey: string;
