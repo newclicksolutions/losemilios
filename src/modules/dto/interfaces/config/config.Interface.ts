@@ -20,4 +20,7 @@ export interface ConfigInterface {
   payu_enabled: number;
   payQR: string;
   optionsproducts: string;
+  payQRdescription: string;
+  neighborhood_list: string;
+  configOptions: string;
 }
