@@ -5,6 +5,8 @@
   "username": "emilioadmin",
   "password": "dev164123",
   "database": "emiliobd",
-  "entities": ["src/**/*.entity{.ts,.js}"],
+  "entities": ["dist/**/*.entity{.ts,.js}"],
   "synchronize": true 
 }
+
+  
