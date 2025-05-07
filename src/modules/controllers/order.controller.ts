@@ -8,17 +8,27 @@ import {
   Param,
   UseGuards,
   Query,
+  MessageEvent, Sse
 } from '@nestjs/common';
+import { Observable, Subject } from 'rxjs';
 import { OrderService } from '../services/order.service';
 import { OrderInterface } from '../dto/interfaces/orders/orders.interface';
 import { CreateOrderInterface } from '../dto/interfaces/orders/createorders.interface';
 import { AuthGuard } from '@nestjs/passport';
 import axios from 'axios';
 import { Pagination } from '../dto/interfaces/pagination.dto';
+import { SseService } from '../services/sse.service';
 
 @Controller('order')
 export class OrderController {
-  constructor(private service: OrderService) {}
+  constructor(private service: OrderService,
+    private readonly sseService: SseService
+  ) {}
+
+  @Sse('sse')
+  sendOrderStream(): Observable<MessageEvent> {
+    return this.sseService.getOrderStream();
+  }
 
   @Get(':id')
   get(@Param() params) {
@@ -54,6 +64,13 @@ export class OrderController {
   async  getBydate(@Body() data: any) {
      return await this.service.getOrdersdeliveryBydateall(data);
   }
+
+
+  @Post('/start/soket/io')
+  async  starsoket(@Body() data: any) {
+     return await this.service.sokettest();
+  }
+
 
   @Post('/allorderdelivery')
   async  getallBydate(@Body() data: any) {

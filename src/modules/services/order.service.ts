@@ -9,6 +9,9 @@ import { CreateOrderInterface } from '../dto/interfaces/orders/createorders.inte
 import { TemplateClient } from '../../config/template/templates';
 import { OptionsService } from '../services/options.service';
 import { Pagination } from '../dto/interfaces/pagination.dto';
+import { OrderGateway } from '../../config/order.gateway';
+import { OrderController } from '../controllers/order.controller'; 
+import { SseService } from './sse.service';
 
 @Injectable()
 export class OrderService {
@@ -18,6 +21,8 @@ export class OrderService {
     private readonly orderProductService: OrderProductService,
     private readonly mailService: MailService,
     private readonly optionsService: OptionsService,
+    private readonly orderGateway: OrderGateway,
+    private readonly sseService: SseService,
   ) {}
 
   async getOrders(data: Pagination) {
@@ -339,6 +344,17 @@ export class OrderService {
     });
   }
 
+  
+  async sokettest() {
+    const orders = await this.OrderRepository.find({
+      relations: [
+        'User',
+      ],
+    });
+    this.sseService.sendNewOrder(orders);  // Emitir SSE
+    //this.orderGateway.notifyNewOrder(orders);
+  }
+
   async createOrder(data: CreateOrderInterface) {
     try {
       const orders = await this.OrderRepository.create(data);
@@ -366,6 +382,8 @@ export class OrderService {
           await this.orderProductService.CreateOrderProdut(dataset);
         }
         this.deliveryMail(result.order_id, 'Creado');
+        this.sseService.sendNewOrder(orders);
+        //this.orderGateway.notifyNewOrder(orders);
         return orders;
       }
     } catch (error) {
