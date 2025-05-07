@@ -12,6 +12,7 @@ export class SseService {
   }
 
   sendNewOrder(order: any) {
+    console.log("New order notification send... ")
     this.orderSubject.next({ data: order });
   }
 }
