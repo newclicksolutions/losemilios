@@ -8,7 +8,8 @@ import {
   Param,
   UseGuards,
   Query,
-  MessageEvent, Sse
+  MessageEvent, Sse,
+  Header
 } from '@nestjs/common';
 import { Observable, Subject } from 'rxjs';
 import { OrderService } from '../services/order.service';
@@ -25,7 +26,11 @@ export class OrderController {
     private readonly sseService: SseService
   ) {}
 
-  @Sse('sse')
+  @Get('sse')
+  @Sse()
+  @Header('Cache-Control', 'no-cache')
+  @Header('Connection', 'keep-alive')
+  @Header('Content-Type', 'text/event-stream')
   sendOrderStream(): Observable<MessageEvent> {
     return this.sseService.getOrderStream();
   }

@@ -69,8 +69,6 @@ export class AuthController {
       throw new HttpException('Token no válido', HttpStatus.UNAUTHORIZED);
     }
   }
-
-
   @UseGuards(AuthGuard('local'))
   @Post('login')
   public async login(@Response() res, @Body() login: LoginUserDto) {
