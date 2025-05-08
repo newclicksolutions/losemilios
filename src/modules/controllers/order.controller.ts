@@ -26,7 +26,7 @@ export class OrderController {
     private readonly sseService: SseService
   ) {}
 
-  @Get('sse')
+  @Get('Stream/sse')
   @Sse()
   @Header('Cache-Control', 'no-cache')
   @Header('Connection', 'keep-alive')
