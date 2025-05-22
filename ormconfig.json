@@ -5,7 +5,7 @@
   "username": "DEVemilioadmin",
   "password": "DEVdev164123",
   "database": "DEVemiliobd",
-  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "entities": ["src/**/*.entity{.ts,.js}"],
   "synchronize": true 
 }
 
