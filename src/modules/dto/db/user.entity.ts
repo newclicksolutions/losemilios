@@ -48,10 +48,10 @@ export class UserEntity {
   @Column({ length: 250 })
   user_pass: string;
 
-  @Column({ length: 950 })
+  @Column({ length: 950 ,nullable: true})
   shipping_address: string;
 
-  @Column({ length: 950 })
+  @Column({ length: 950,nullable: true })
   shipping_neighborhood: string;
 
   @Column()
