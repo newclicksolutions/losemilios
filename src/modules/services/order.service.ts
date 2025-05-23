@@ -346,7 +346,7 @@ export class OrderService {
     async findLastOrder() {
     return this.OrderRepository.findOne({
       order: {
-        order_date: 'DESC',    // o date_created si prefieres
+        order_date: 'DESC',
       },
     });
   }
