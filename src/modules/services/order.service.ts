@@ -343,6 +343,13 @@ export class OrderService {
       where: [order],
     });
   }
+    async findLastOrder() {
+    return this.OrderRepository.findOne({
+      order: {
+        order_date: 'DESC',    // o date_created si prefieres
+      },
+    });
+  }
 
   
   async sokettest() {

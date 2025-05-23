@@ -65,6 +65,11 @@ export class OrderController {
     return this.service.getOrdersByDeliver(data,params.userId);
   } 
 
+   @Get('/getLastOrder/last')
+  getLastOrder() {
+    return this.service.findLastOrder();
+  } 
+
   @Post('/orderdelivery')
   async  getBydate(@Body() data: any) {
      return await this.service.getOrdersdeliveryBydateall(data);
