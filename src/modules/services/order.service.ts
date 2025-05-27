@@ -361,12 +361,13 @@ async revisarOrdenesAbandonadas(): Promise<void> {
 
   const ordenesAbandonadas = await this.OrderRepository.find({
     where: {
-      order_status: 1, // Estado "Creada"
+      OrderStatus: 1, // Estado "Creada"
       date_created: LessThan(quinceMinutosAtras),
     },
     relations: ['Transaction', 'Paymethod'],
   });
 console.log(ordenesAbandonadas)
+
   for (const orden of ordenesAbandonadas) {
     const tieneMetodoPago3 = orden.Paymethod?.[0]?.paymethod_id === 3;
     const noTieneTransaccion = !orden.Transaction 
