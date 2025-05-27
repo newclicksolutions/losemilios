@@ -357,7 +357,7 @@ async RevisarOrdenesAbandonadas() {
   }
 
 async revisarOrdenesAbandonadas(): Promise<void> {
-  const quinceMinutosAtras = new Date(Date.now() - 1 * 60 * 1000);
+  const quinceMinutosAtras = new Date(Date.now() - 15 * 60 * 1000);
 
   const ordenesAbandonadas = await this.OrderRepository.find({
     where: {
