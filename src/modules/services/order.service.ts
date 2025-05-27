@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository } from 'typeorm';
+import { Between, LessThan, Repository } from 'typeorm';
 import { OrderEntity } from '../dto/db/order.entity';
 import { MailService } from '../services/mail.service';
 import { OrderProductService } from '../services/orderproduct.service';
@@ -12,6 +12,8 @@ import { Pagination } from '../dto/interfaces/pagination.dto';
 import { OrderGateway } from '../../config/order.gateway';
 import { OrderController } from '../controllers/order.controller'; 
 import { SseService } from './sse.service';
+import { Cron, CronExpression } from '@nestjs/schedule';
+
 
 @Injectable()
 export class OrderService {
@@ -24,7 +26,10 @@ export class OrderService {
     private readonly orderGateway: OrderGateway,
     private readonly sseService: SseService,
   ) {}
-
+@Cron(CronExpression.EVERY_10_SECONDS)
+async RevisarOrdenesAbandonadas() {
+  await this.revisarOrdenesAbandonadas();
+}
   async getOrders(data: Pagination) {
     const total = await this.OrderRepository.count();
     const orders = await this.OrderRepository.find({
@@ -350,6 +355,27 @@ export class OrderService {
       },
     });
   }
+
+async revisarOrdenesAbandonadas(): Promise<void> {
+  const quinceMinutosAtras = new Date(Date.now() - 1 * 60 * 1000);
+
+  const ordenesAbandonadas = await this.OrderRepository.find({
+    where: {
+      order_status: 1, // Estado "Creada"
+      date_created: LessThan(quinceMinutosAtras),
+    },
+    relations: ['Transaction', 'Paymethod'],
+  });
+console.log(ordenesAbandonadas)
+  for (const orden of ordenesAbandonadas) {
+    const tieneMetodoPago3 = orden.Paymethod?.[0]?.paymethod_id === 3;
+    const noTieneTransaccion = !orden.Transaction 
+
+    if (tieneMetodoPago3 && noTieneTransaccion) {
+      await this.updateState(orden.order_id, 6); // Cancelar
+    }
+  }
+}
 
   
   async sokettest() {

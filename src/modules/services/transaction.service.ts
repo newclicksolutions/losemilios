@@ -56,7 +56,7 @@ export class TransactionService {
           newOrderState = 6; // Cancelado
           break;
         default:
-          newOrderState = 2; // Por defecto, en proceso
+          newOrderState = 1; // Por defecto, en proceso
           console.warn(`Estado de transacción no mapeado: ${paymentState}`);
       }
 
