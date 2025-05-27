@@ -366,7 +366,7 @@ async revisarOrdenesAbandonadas(): Promise<void> {
     },
     relations: ['Transaction', 'Paymethod'],
   });
-console.log(ordenesAbandonadas)
+console.log(quinceMinutosAtras)
 
   for (const orden of ordenesAbandonadas) {
     const tieneMetodoPago3 = orden.Paymethod?.[0]?.paymethod_id === 3;
